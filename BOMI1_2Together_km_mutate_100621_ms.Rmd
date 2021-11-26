@@ -1,0 +1,83 @@
+---
+title: "BOMI2_ostman_survival"
+output:
+  html_document:
+    fig_height: 7
+    fig_width: 10
+    theme: cosmo
+---
+
+```{r load libs, message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(readr)
+library(readxl)
+library(survival)
+library(survminer)
+library(ggthemes)
+```
+
+
+```{r import, echo=FALSE}
+crc <- read_excel ("Bomi2_Bomi1_together_100621.xlsx")
+```
+
+## Univariate Cox - DSS
+```{r univariate cox, echo=FALSE, fig.height=6, fig.width=8}
+
+crc <- mutate(crc, variable = factor(Adeno1_Squamous2_rest3))
+
+crc_cox <- coxph(Surv(Time_years, Status) ~ variable , data = filter(crc))
+summary(crc_cox)
+
+km_plot<-survfit(Surv(Time_years, Status) ~ variable , data = filter(crc))
+
+(p <- ggsurvplot( km_plot,
+                 legend = "right",
+                  size = 1.5,
+                  censor.size = 9,
+                  pval.size = 7,
+                  font.legend = c(20,"plain","black"),
+                  font.x.title = c(20,"plain","black"),
+                  font.y.title = c(20,"plain","black"),
+                  font.x = c(20, "plain", "black"),          
+                  font.y = c(20, "plain", "black"),
+                  font.xtickslab = c(20, "plain", "black"),
+                  font.ytickslab = c(20, "plain", "black"),
+                  conf.int = FALSE,
+                  pval= TRUE,
+                  ggtheme = theme_par() ))
+
+```
+
+## Multivariate Cox - DSS
+
+```{r multivariate cox, echo=FALSE, fig.height=7, fig.width=8}
+crc <- crc %>%
+  mutate(Adeno1 = ifelse(is.na(Adeno1_Squamous2_rest3), NA,
+                         ifelse(Adeno1_Squamous2_rest3 == 1, 1, 0)),
+         Squamous2 = ifelse(is.na(Adeno1_Squamous2_rest3), NA,
+                         ifelse(Adeno1_Squamous2_rest3 == 2, 1, 0)),
+         rest3 = ifelse(is.na(Adeno1_Squamous2_rest3), NA,
+                         ifelse(Adeno1_Squamous2_rest3 == 3, 1, 0))
+         )
+crc_cox <- coxph(Surv(Time, Status) ~ variable
+                + Gender + Age67 + PS_WHO2 + CAF7_PDGFRAnegPDGFRBposFAPposSMAposPanEpiMaskNeg_LowQuart,
+                   data = filter(crc))
+
+summary(crc_cox)
+# ci.exp(crc_cox)
+#ggforest(crc_cox, data = crc)
+
+```
+
+## Test for PH assumption
+
+There's a problem if some of the p-values below is less than 0.05.
+
+```{r validate cox, echo=FALSE}
+
+(validate_cox = cox.zph(crc_cox))
+ggcoxzph(validate_cox)
+
+
+```
