@@ -1,5 +1,5 @@
 ---
-title: "BOMI2_ostman_survival"
+title: "BOMI_survival"
 output:
   html_document:
     fig_height: 7

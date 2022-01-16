@@ -17,5 +17,5 @@ Jupyter Notebook:
 * visualize_caf.ipynb: Jupyter Notebook used to visualize the data and generate some of the paper's figures.
 
 R scripts:
-* BOMI1_2Together_Cox_Con_100621_ms.Rmd
-* BOMI1_2Together_km_mutate_100621_ms.Rmd
+* BOMI1_2Together_Cox_Con_100621_ms.Rmd: Survival analysis
+* BOMI1_2Together_km_mutate_100621_ms.Rmd: Cox regression
