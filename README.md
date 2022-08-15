@@ -4,6 +4,8 @@ Supplementary code repository for manuscript "Identification of two novel subset
 
 The scripts are ran in the order defined below. MATLAB scripts are used for preparing the image data for analysis. Image analysis is run using Python scripts followed by Jupyter Notebook that provides categorization of cells and data visualization. Finally, R scripts are used for survival analysis.
 
+Necessary data for creating manuscript figures are available in 'data' folder. There are separate files for spot ratios and case ratios for 15 CAFs used in visualize_caf.ipynb notebook for both cohorts. The Excel files include necessary case metadata for running survival analysis R scripts.
+
 MATLAB scripts:
 * roi_extract.m: Extract individual cores from a TMA slide using coordinates given manually with Fiji macro ROI 1-click.
 * registration.m: Register different cyclic staining rounds using DAPI channel.
@@ -17,5 +19,5 @@ Jupyter Notebook:
 * visualize_caf.ipynb: Jupyter Notebook used to visualize the data and generate some of the paper's figures.
 
 R scripts:
-* BOMI1_2Together_Cox_Con_100621_ms.Rmd: Survival analysis
-* BOMI1_2Together_km_mutate_100621_ms.Rmd: Cox regression
+* BOMI1_2_OS_survival_Final.Rmd: Survival analysis
+* BOMI1_2_OS_Cox_survival_ContinuousValues_Final.Rmd: Cox regression
